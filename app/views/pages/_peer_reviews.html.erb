@@ -1,0 +1,103 @@
+<div id="individual_overview">
+	<% for review_period in @review_periods %>
+		<div class="period_header"><%= link_to review_period.name, "#", :id => review_period.id, :class => "review_period_toggle" %></div>
+		<li id="review_period_<%= review_period.id %>">
+                        <div class="group_header">
+                          <%= @selected_user.name %>
+                            <span class="avg_rating">
+                                Average Rating: <%= ReviewPeriod.calculate_average(review_period, @selected_user) %>
+                            </span>
+                            <span class="avg_rating">
+                                Self Rating: <%= ReviewPeriod.get_self_score(review_period, @selected_user) %>
+                            </span>
+                            <span class="avg_rating">
+                                Difference: <%= ReviewPeriod.calculate_own_difference(review_period, @selected_user) %>
+                            </span>
+                            <span class="avg_rating">
+                                Avg Ratings Awarded: <%= ReviewPeriod.calculate_ratings_awarded_average(review_period, @selected_user) %>
+                            </span>
+                            <span class="avg_rating">
+                                Avg Group Rating: <%= ReviewPeriod.calculate_team_average_rating(review_period, @selected_user.groups.first) %>
+                            </span>
+                            <span class="avg_rating">
+                                Awarded Difference: <%= ReviewPeriod.calculate_awarded_difference(review_period, @selected_user)%>
+                            </span>
+                        </div>
+           <div style="width: 50%;" class="floatLeft">
+
+			<% if PeerReview.where(:reviewee_id => @selected_user.id, :review_period_id => review_period.id).empty? %>
+				<p>There have been no peer reviews submitted yet for <%= @selected_user.name %> during <%= review_period.name %>.</p>
+			<% else %>
+
+                    <div class="table_header">
+                      What was said:
+                    </div>
+                    <table id="admin_table">
+                      <thead>
+                        <tr>
+                            <th>Reviewer</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                        </tr>
+                       </thead>
+                       <tbody>
+                        <% for peer_review in @selected_user.completed_peer_reviews_received(review_period.id) %>
+                            <tr>
+                                <td><strong><%= User.find(peer_review.user_id).name %></strong></td>
+
+                                <% if peer_review.rating < 4 %>
+                                          <td class="low_score">
+                                <% elsif peer_review.rating > 6 %>
+                                          <td class="high_score">
+                                <% else %>
+                                        <td class="medium_score">
+                                <% end %>
+                                    <%= peer_review.rating %></td>
+
+                                <td>
+																	<%= peer_review.review if current_user.admin %>
+																</td>
+                            </tr>
+                        <% end %>
+                       </tbody>
+                    </table>
+
+			<% end %>
+             </div>
+              <div style="width: 50%;" class="floatRight">
+                    <% if @selected_user.completed_peer_reviews(review_period.id).empty? %>
+                        <p><%= @selected_user.name %> has not yet completed peer reviews for <%= review_period.name %>.</p>
+                    <% else %>
+                        <div class="table_header">What <%= @selected_user.name %> said:</div>
+                        <table id="admin_table">
+                          <thead>
+                            <tr>
+                                <th>Recipient</th>
+                                <th>Rating</th>
+                                <th>Review</th>
+                            </tr>
+                           </thead>
+                           <tbody>
+                            <% for peer_review in @selected_user.completed_peer_reviews(review_period.id) %>
+                                <tr>
+                                    <td><strong><%= User.find(peer_review.reviewee_id).name %></strong></td>
+                                    <% if peer_review.rating < 4 %>
+                                          <td class="low_score">
+                                <% elsif peer_review.rating > 6 %>
+                                          <td class="high_score">
+                                <% else %>
+                                        <td class="medium_score">
+                                <% end %>
+                                    <%= peer_review.rating %></td>
+                                    <td><%= peer_review.review if current_user.admin %></td>
+                                </tr>
+                            <% end %>
+                           </tbody>
+                        </table>
+                    <% end %>
+              </div>
+
+              <div class="clear"></div>
+		</li>
+	<% end %>
+</div>

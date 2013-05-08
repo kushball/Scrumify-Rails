@@ -1,0 +1,12 @@
+<% title "Roster" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @roster.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_roster_path(@roster) %> |
+  <%= link_to "Destroy", @roster, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", rosters_path %>
+</p>

@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Custom form:</b>
+  <%= @custom_field.custom_form %>
+</p>
+
+<p>
+  <b>Complex:</b>
+  <%= @custom_field.complex %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @custom_field.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_custom_field_path(@custom_field) %> |
+<%= link_to 'Back', custom_fields_path %>

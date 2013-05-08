@@ -1,0 +1,16 @@
+<%= form_for @use_case do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label :success_scenario %><br />
+    <%= f.text_area :success_scenario %>
+  </p>
+  <p>
+    <%= f.label :group %><br />
+    <%= f.text_field :group %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

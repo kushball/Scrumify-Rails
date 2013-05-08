@@ -1,0 +1,7 @@
+<%= form_tag(group_users_path) do %>
+	There are <div id="number_of_users"><%= @users.count %></div> registered users.<br />
+	Preferred number of groups: <%= text_field_tag 'number_of_groups' %><br />
+	Group size: <%= text_field_tag 'group_size' %><br />
+	Let groups differ in size by at most: <%= text_field_tag 'group_size_difference', 1 %><br />
+	<%= submit_tag("Group Users") %>
+<% end %>

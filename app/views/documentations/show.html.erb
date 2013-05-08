@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Group:</b>
+  <%= @documentation.group %>
+</p>
+
+<p>
+  <b>User:</b>
+  <%= @documentation.user %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%= @documentation.name %>
+</p>
+
+
+<%= link_to 'Edit', edit_documentation_path(@documentation) %> |
+<%= link_to 'Back', documentations_path %>

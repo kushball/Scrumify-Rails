@@ -1,0 +1,9 @@
+$("#time_log_<%= @time_log_id %>").hide();
+
+//Adjust the Verify Check Images In Case the Last Estimates and Actuals are deleted.
+if ($("#actual_time_logs .time_log:visible").length < 1) 
+	$(".verify_actuals .check").removeClass("check_hover");
+if ($("#estimate_time_logs .time_log:visible").length < 1)
+	$(".verify_estimates .check").removeClass("check_hover");
+if ($("#actual_time_logs .time_log:visible").length < 1 && $("#estimate_time_logs .time_log:visible").length < 1)
+	$(".fill_times").removeClass("check_hover");

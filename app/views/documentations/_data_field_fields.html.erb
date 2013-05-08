@@ -1,0 +1,7 @@
+<p class="fields">
+  <%= f.object.field_name %>  
+  <%= f.text_area :body, :rows => 3 %><br />
+</p>
+<%= f.fields_for :data_field_steps do |builder| %>
+  <%= render "data_field_step_fields", :f => builder %>
+<% end %>

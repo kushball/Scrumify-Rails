@@ -1,0 +1,13 @@
+<% title "Edit Timecard Period" %>
+
+<div id="form">
+	<div id="form_header">
+		<ul id="breadcrumb">
+			<li class="faded">&larr;<%= link_to "Back", timecard_periods_path %>
+			<li class="active">Edit Timecard Period</li> 
+			<li><%= link_to "View This Period", @timecard_period, :class => "matte_button" %></li>
+			<li><%= link_to "View All Periods", timecard_periods_path, :class => "matte_button" %></li>
+		</ul>
+	</div>
+<%= render 'edit_form' %>
+</div>

@@ -1,0 +1,21 @@
+<% title "Use Cases" %>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Success Scenario</th>
+    <th>Group</th>
+  </tr>
+  <% for use_case in @use_cases %>
+    <tr>
+      <td><%= use_case.title %></td>
+      <td><%= use_case.success_scenario %></td>
+      <td><%= use_case.group %></td>
+      <td><%= link_to "Show", use_case %></td>
+      <td><%= link_to "Edit", edit_use_case_path(use_case) %></td>
+      <td><%= link_to "Destroy", use_case, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Use Case", new_use_case_path %></p>

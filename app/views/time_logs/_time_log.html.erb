@@ -1,0 +1,32 @@
+<li id="time_log_<%= time_log.id %>" class="time_log">
+	<div class="inline_edit">
+		<div class="inline_content">
+			<ul class="time_log_list floatLeft">
+                            <li class="charge_number_name"><%= @group.name %><%= time_log.charge_number.name %></li>
+                            <li class="charge_number"><%= time_log.charge_number.description %></li>
+		        	<li class="day"><%= time_log.day %></li>
+				<li class="hours"><%= time_log.hours %></li>
+			</ul>
+			<div class="inline_links floatRight">
+				<%= link_to "Edit", "javascript: void(0)", :class => "inline_edit_trigger" %>
+				<%= link_to "Delete", time_log, :remote => true, :confirm => 'Are you sure?', :method => :delete %>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="inline_form">
+			<%= form_for time_log, :remote => true do |form| %>
+				<%= form.select :charge_number_id, @charge_numbers %>
+				<% if time_log.actual %>
+					<%= form.select :day, @available_days_for_actuals, { :class => "time_log_form_actual_day_select" } %>
+				<% else %>
+					<%= form.select :day, @available_days_for_estimates, { :class => "time_log_form_estimate_day_select" } %>
+				<% end %>
+				<%= form.text_field :hours %>
+				<%= form.submit :class => "matte_button" %>
+				<em>or</em>
+				<%= link_to "Cancel", "javascript: void(0)", :class => "inline_edit_cancel" %>
+			<% end %>
+			
+		</div>
+	</div>
+</li>

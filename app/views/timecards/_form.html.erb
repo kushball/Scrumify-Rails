@@ -1,0 +1,125 @@
+<%= javascript_tag do %>
+  	window.available_days_for_actuals = <%=raw @available_days_for_actuals.to_json %>;
+	window.available_days_for_estimates = <%=raw @available_days_for_estimates.to_json %>;
+<% end %>
+
+<div id="timecard_form">
+	<div class="step light_grey_header">
+		<div class="goal fill_times">
+			<% if @actual_time_logs.count > 0 || @estimate_time_logs.count > 0 %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Fill Out Your Times</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div id="time_log_generator">
+		<%= form_for @time_log, :remote => true do |f| %>
+		  <%= f.error_messages %>
+			<%= f.select :actual, { "Actual" => true, "Estimate" => false }, { :id => "time_log_form_actual_selector" } %>
+			<%= f.select :day, @available_days_for_actuals, { :class => "time_log_form_day_select", :prompt => "Choose Date" } %>
+		  <%= f.select :charge_number_id, @charge_numbers, :prompt => "Choose Charge Number" %>
+		  <%= f.text_field :hours, :title => "#" %>
+			<%= f.hidden_field :timecard_id, :value => @timecard.id %>
+		  <%= f.submit "Log This Time", :class => "orange_button" %>
+		<% end %>
+	</div>
+
+	<div class="step light_grey_header">
+		<div class="goal verify_actuals floatLeft">
+			<% if @actual_time_logs.count > 0 %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Verify Actuals</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="time_log_box">
+		<div class="blue_header">
+			Actuals:
+		</div>
+		<ul id="actual_time_logs">
+			<% for time_log in @actual_time_logs %>
+				<%= render "time_logs/time_log", :time_log => time_log %>
+			<% end %>
+		</ul>
+	</div>
+	
+	<div class="step light_grey_header">
+		<div class="goal verify_estimates floatLeft">
+			<% if @estimate_time_logs.count > 0 %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Verify Estimates</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="time_log_box">
+		<div class="blue_header">
+			Estimates:
+		</div>
+		<ul id="estimate_time_logs">
+			<% for time_log in @estimate_time_logs %>
+				<%= render "time_logs/time_log", :time_log => time_log %>
+			<% end %>
+		</ul>
+	</div>
+
+	<div class="step light_grey_header">
+		<div class="goal fill_accomplishments floatLeft">
+			<% if @timecard.done.blank? %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Fill Out Accomplishments</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="goal fill_issues floatLeft">
+			<% if @timecard.issues.blank? %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Fill Out Issues</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="goal fill_todos floatLeft">
+			<% if @timecard.todo.blank? %>
+				<%= image_tag("spacer.png", :class => "check floatLeft", :height => "32px", :width => "32px") %>
+			<% else %>
+				<%= image_tag("spacer.png", :class => "check check_hover floatLeft", :height => "32px", :width => "32px") %>
+			<% end %>
+			<h2>Fill Out Todos</h2>
+			<div class="clear"></div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="area_box">
+		<%= form_for @timecard do |f| %>
+			<p>
+				<%= f.label :done, "This Week's Accomplishments" %><br />
+		    	<%= f.text_area :done %>
+			</p>
+			<p>
+				<%= f.label :issues, "This Week's Issues" %><br />
+		    	<%= f.text_area :issues %>
+			</p>
+			<p>
+				<%= f.label :todo, "Plans for Next Week" %><br />
+		    	<%= f.text_area :todo %>
+			</p>
+		</div>
+
+		  <p><%= f.submit :class => "orange_button" %> <em>or</em> <%= f.submit "Update & Submit Timecard", :name => "submit_card", :class => "red_matte_button", :replace_with => "Updating and Submitting Timecard...", :onclick => "return confirm('Make sure you have completed all the above steps. You can unsubmit this form from the following screen. However, keep in mind that if you try to unsubmit after the due date, it will be marked as late. By clicking yes you are saying you have filled out the timecard completely and it is ready for grading. Would you like to submit this timecard?')" %></p>
+		<% end %>
+</div>

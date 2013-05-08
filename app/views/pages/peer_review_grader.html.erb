@@ -1,0 +1,123 @@
+<div class="box">
+    <div class="box_header">Review Periods</div>
+    <% for review_period in @review_periods.reverse %>
+        <div class="toggle">
+            <div class="grey_header">
+                  <div class="floatLeft">
+                    <%= review_period.name %>
+                  </div>
+                  <div class="floatLeft dates"><%= review_period.starts_on.to_formatted_s(:long) + " - " + review_period.ends_on.to_formatted_s(:long) %></div>
+                  <div class="floatRight">
+                    <a href="JavaScript:void(0);" class="trigger"><span>View</span><span class="hide">Close</span></a>
+                  </div>
+                  <div class="clear"></div>
+            </div>
+
+            <div class="toggle_content">
+                <table id="admin_table">
+                  <thead>
+                    <tr>
+                        <th>Reviewer</th>
+                        <th>Team</th>
+                        <th>Self Rating</th>
+                        <th>Team Rating</th>
+                        <th>Difference</th>
+												<th>Avg Awarded</th>
+                        <th>Number Completed</th>
+                        <th>Status</th>
+                        <th>Submit Time</th>
+                        <th>Late?</th>
+                        <th>How Late?</th>
+												<th>Projected Grade</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% for user in @users %>
+                        <tr>
+                            <td><%= user.last_name %>, <%= user.first_name %></td>
+                            <td><%= user.groups.first.name %></td>
+
+															<!-- Self Rating -->
+                              <% if ReviewPeriod.get_self_score(review_period, user) == 0 %>
+                                  <td class="red_bg"> <%= ReviewPeriod.get_self_score(review_period, user) %> </td>
+                              <% else %>
+                                  <td><%= ReviewPeriod.get_self_score(review_period, user) %></td>
+                              <% end %>
+
+															<!-- Team Rating -->
+														<% team_average = ReviewPeriod.calculate_average(review_period, user) %>
+														<% if team_average < 6 %>
+															<td class="red_bg">
+														<% else %>
+															<td>
+														<% end %>
+															<%= team_average %></td>
+														
+														<!-- Difference -->
+                            <% if ReviewPeriod.calculate_own_difference(review_period, user).abs > 1.5 %>
+                                <td class="yellow_bg">
+                            <% else %>
+                                <td>
+                            <% end %>
+                                    <%= ReviewPeriod.calculate_own_difference(review_period, user) %>
+                            </td>
+
+														<!-- Ratings Awarded -->
+														<% avg_awarded = ReviewPeriod.calculate_ratings_awarded_average(review_period, user) %>
+														
+														<% if avg_awarded == 10 %>
+															<td class = "red_bg">
+														<% else %>
+															<td>
+														<% end %>
+															<%= avg_awarded %>
+														</td>
+
+														<!-- Number Completed -->
+                            <td><%= ReviewPeriod.get_users_completed_count(review_period, user) %>/<%= user.groups.first.users.count %></td>
+
+														<!-- Status (of submission) -->
+                            <% case ReviewPeriod.peer_review_status(review_period, user) %>
+                            <% when "Completed" %>
+                                <td class="green_bg">Completed</td>
+                            <% when "In Progress" %>
+                                <td class="yellow_bg">In Progress</td>
+                            <% else %>
+                                <td class="red_bg">Not Started</td>
+                            <% end %>
+
+														<!-- Submit Time -->
+                            <td>
+                                <% if !ReviewPeriod.submission_time(review_period, user).blank? %>
+                                    <%= ReviewPeriod.submission_time(review_period, user).strftime("%m/%d/%Y at %l:%M %p") %>
+                                <% else %>
+                                    None Completed
+                                <% end %>
+                            </td>
+
+														<!-- Late, How Late -->
+                            <% if ReviewPeriod.late?(review_period, user) %>
+                                <td class="red_bg">Late</td>
+                                <td>
+                                  <% case ReviewPeriod.peer_review_status(review_period, user) %>
+                                  <% when "Completed" %>
+                                    <%= distance_of_time_in_words(review_period.ends_on.end_of_day, ReviewPeriod.submission_time(review_period, user)) %>
+                                  <% else %>
+                                    <%= distance_of_time_in_words(review_period.ends_on.end_of_day, Time.now) %>
+                                  <% end %>
+                                </td>
+                            <% else %>
+                                <td></td>
+                                <td></td>
+                            <% end %>
+
+														<!-- Projected Grade -->
+														<td><%= ReviewPeriod.calculate_grade(review_period, user) %></td>
+                        </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    <% end %>
+</div>

@@ -1,0 +1,43 @@
+<% title("Users (" + @count.to_s + ")") %>
+
+<div id="users_list">
+	<%= will_paginate @users %>
+	
+	<table id="admin_table">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Group</th>
+				<th>System Role</th>
+				<th>Change Role</th>
+			</tr>
+		</thead>
+		<tbody>
+			<% if !@users.blank? %>
+			  <% for user in @users %>
+			  	<tr>
+					<td><%= link_to user.name, user %></td>
+					<td><%= user.email %></td>
+					<td>
+						<%= user.groups.first.name unless user.groups.blank? %>
+					</td>
+						<% if user.admin? %>
+							<td>Admin</td><td></td>
+						<% elsif user.tutor? %>
+							<td>Tutor</td> 
+							<td><%= link_to "Change to Student", change_role_to_student_path(user.id) %></td>
+						<% else %>
+							<td>Student</td>
+							<td><%= link_to "Change to Tutor", change_role_to_tutor_path(user.id) %></td>		
+						<% end %>
+				</tr>
+			  <% end %>
+			<% else %>
+			   There are no users yet.
+			<% end %>
+		</tbody>
+	</table>
+	
+	<%= will_paginate @users %>
+</div>

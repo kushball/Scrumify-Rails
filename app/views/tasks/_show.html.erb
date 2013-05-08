@@ -1,0 +1,32 @@
+<% title "Task" %>
+
+<p>
+  <strong>Story:</strong>
+  <%= task.story_id %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= task.name %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <%= task.description %>
+</p>
+<p>
+  <strong>User:</strong>
+  <%= task.user_id %>
+</p>
+<p>
+  <strong>Points:</strong>
+  <%= task.points %>
+</p>
+
+<p>
+	<%= task.state.name unless task.state.blank? %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_task_path(task) %> |
+  <%= link_to "Destroy", task, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", tasks_path %>
+</p>

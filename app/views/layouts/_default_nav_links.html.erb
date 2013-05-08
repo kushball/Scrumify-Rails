@@ -1,0 +1,163 @@
+<div id="sidebar_navigation">
+	
+	<div id="nav_search">
+		<input type="text"></input>
+	</div>
+	
+	<!-- 
+	========================================
+	STUDENT LINKS
+	========================================
+	-->
+	<% if !current_user.admin && !current_user.tutor %>
+		<div id="accordion">
+		    <h3><a href="#"><%= link_to "Dashboard", "#", :class => "dashboard_link accordian_link" %></a></h3>
+		    <div>
+				<ul class="sub_links">
+					<% if current_user.groups.empty? %>
+						<li><%= link_to "Dashboard", dashboard_path %></li>
+					<% else %>
+						<li><%= link_to "Dashboard", current_user.groups.first %></li>
+					<% end %>
+				</ul>
+			</div>
+		    <h3><%= link_to "My Group", "#", :class => "group_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+					<li><%= link_to "General Information", current_user.groups.first %></li>
+					<li><%= link_to "Schedule", group_path(current_user.groups.first, :view_option => "schedule") %></li>
+					<li><%= link_to "Time Cards", group_path(current_user.groups.first, :view_option => "time_cards") %></li>
+
+				<% if current_user.admin or current_user.is_group_deputy? %>
+					<li><%= link_to "Edit Group Roles", roles_path %></li>
+					<li><%= link_to "Edit Group Information", edit_group_path(current_user.groups.first) %></li>
+				 	<!-- <li><%# link_to "Add/Edit Charge Numbers", group_path(@group, :view_option => "charge_numbers") %></li> -->
+				<% end %>
+				</ul>
+		    </div>
+			<h3><%= link_to "Time Cards", "#", :class => "timecard_link accordian_link" %></h3>
+			<div>
+				<ul class="sub_links">
+				<% if !TimecardPeriod.get_active_timecard_period.blank? %>
+						<li><%= link_to "Update Timecard", edit_timecard_path(current_user.get_active_timecard) %></li>
+				<% end %>
+					<li><%= link_to "Manage Timecards", user_path(current_user, :view_option => "time_cards") %></li>
+					<li><%= link_to "Group Timecard", group_path(current_user.groups.first, :view_option => "time_cards") %></li>
+				</ul>
+			</div>
+          	<% if !ReviewPeriod.current.blank? %>
+			<h3><%= link_to "Peer Reviews", "#", :class => "peer_reviews_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+						<li><%= link_to "Update Peer Review", new_peer_review_path(:review_period_id => ReviewPeriod.current.id) %></li>
+				</ul>
+		    </div>
+				<h3><%= link_to "Scrum", "#", :class => "scrum_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+						<li><%= link_to "Stories", group_stories_path(current_user.groups.first.id) %></li>
+						<li><%= link_to "My Tasks", "#" %></li>
+					</ul>
+		    </div>
+			<% end %>
+		</div>
+	<% end %>
+	
+	<!-- 
+	========================================
+	ADMIN LINKS 
+	========================================
+	-->
+	<% if current_user.admin %>
+		<div id="accordion">
+		    <h3><a href="#"><%= link_to "Dashboard", "#", :class => "dashboard_link accordian_link" %></a></h3>
+		    <div>
+				<ul class="sub_links">
+					<li><%= link_to "Home", dashboard_path %></li>
+				</ul>
+			</div>
+		    <h3><%= link_to "Grouping", "#", :class => "group_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+					<li><%= link_to "Signup Stats", stats_path %>
+					<li><%= link_to "View Groups", groups_path %></li>
+					<li><%= link_to "View Roster", roster_path %></li>
+					<li><%= link_to "Run Grouping", configure_grouping_algorithm_path %></li>
+					<li><%= link_to "Manage Users", users_path %></li>
+				</ul>
+		    </div>
+			<h3><%= link_to "Time Cards", "#", :class => "timecard_link accordian_link" %></h3>
+			<div>
+				<ul class="sub_links">
+                    <li><%= link_to "Timecard Grading", time_card_grader_path %></li>
+					<li><%= link_to "View Timecard Periods", timecard_periods_path %></li>
+					<li><%= link_to "Create New Periods", new_timecard_period_path %></li>
+				</ul>
+			</div>
+			<h3><%= link_to "Peer Reviews", "#", :class => "peer_reviews_link accordian_link" %></h3>
+		   <div>
+		    <ul class="sub_links">
+          <li><%= link_to "Peer Review Grading", peer_review_grader_path %></li>
+          <li><%= link_to "Peer Review Viewer", peer_review_viewer_path %></li>
+					<li><%= link_to "New Review Period", new_review_period_path %></li>
+					<li><%= link_to "Manage Review Periods", review_periods_path %></li>
+				</ul>
+		   </div>
+				<h3><%= link_to "Scrum", "#", :class => "scrum_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+						<li><%= link_to "Dashboard", group_stories_url(Group.first.id) %></li>
+					</ul>
+		    </div>
+				<h3><%= link_to "Past Instances", "#", :class => "past_instances_link accordian_link" %></h3>
+				<div>
+					<ul class="sub_links">
+						<li><%= link_to "Winter 2012", "http://groupme-wi12.boltlab.com" %></li>
+						<li><%= link_to "Spring 2012", "http://groupme-sp12.boltlab.com" %></li>
+					</ul>
+				</div>
+		</div>
+	<% end %>
+	
+	<!-- 
+	========================================
+	TUTOR LINKS 
+	========================================
+	-->
+	<% if current_user.tutor %>
+		<div id="accordion">
+		    <h3><a href="#"><%= link_to "Dashboard", "#", :class => "dashboard_link accordian_link" %></a></h3>
+		    <div>
+				<ul class="sub_links">
+					<li><%= link_to "Home", dashboard_path %></li>
+				</ul>
+			</div>
+		    <h3><%= link_to "Grouping", "#", :class => "group_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+					<li><%= link_to "Signup Stats", stats_path %>
+					<li><%= link_to "View Groups", groups_path %></li>
+					<li><%= link_to "View Roster", roster_path %></li>
+					<li><%= link_to "Run Grouping", configure_grouping_algorithm_path %></li>
+				</ul>
+		    </div>
+			<h3><%= link_to "Time Cards", "#", :class => "timecard_link accordian_link" %></h3>
+			<div>
+				<ul class="sub_links">
+                    <li><%= link_to "Timecard Grading", time_card_grader_path %></li>
+					<li><%= link_to "View Timecard Periods", timecard_periods_path %></li>
+					<li><%= link_to "Create New Periods", new_timecard_period_path %></li>
+				</ul>
+			</div>
+			<h3><%= link_to "Peer Reviews", "#", :class => "peer_reviews_link accordian_link" %></h3>
+		    <div>
+		    	<ul class="sub_links">
+                    <li><%= link_to "Peer Review Grading", peer_review_grader_path %></li>
+                    <li><%= link_to "Peer Review Viewer", peer_review_viewer_path %></li>
+					<li><%= link_to "New Review Period", new_review_period_path %></li>
+					<li><%= link_to "Manage Review Periods", review_periods_path %></li>
+				</ul>
+		    </div>
+		</div>
+	<% end %>
+</div>

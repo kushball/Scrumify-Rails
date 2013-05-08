@@ -1,0 +1,143 @@
+<!-- Important: in Signup Wizard  (Step 2 - information step, not including schedule) -->
+
+<div id="form" class="medium_width">
+	<div id="form_header">
+		<ul id="breadcrumb">
+			<li class="faded">Step 1: Login Info</li>
+			<li class="active">Step 2: A Bit About You</li>
+			<% if current_user.signup_status != "account_step" %>
+				<li><%= link_to "Step 3: Availability", "signup_wizard?step=3" %></li>
+			<% else %>
+				<li class="faded">Step 3: Availability</li>
+			<% end %>
+		</ul>
+	</div>
+	
+	<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :multipart => true }) do |f| %>
+		<%= f.error_messages %>
+		
+		<div class="form_section">
+			<h3>Personal Information</h3>
+			<p>
+				<%= f.label :first_name %><br />
+			  	<%= f.text_field :first_name %>
+			</p>
+			<p>
+				<%= f.label :last_name %><br />
+			  	<%= f.text_field :last_name %>
+			</p>
+		</div>
+		
+		<div class="form_section">
+			<h3>Monday Availability</h3>
+			<span class="instructions">Please answer the following questions based on your preference on the time that you plan to attend CSE 110 Monday discussion section.  The choices of time are on Mondays 3pm-3:50pm or 4pm-4:50pm.  Please enter 1 to indicate your first choice, 2 for your second choice, 3 for your third choice, or 0 if you can't attend at that time.  If you have no preference among your first and second choice, please enter 2 for both of them.  If you have no preference among your second and third choice, please enter 3 for both of them.  If you have no preference among all your choices, please enter 3 for all of them.</span>
+			<span class="info red">Enter 1 for first choice, 2 for second choice, 3 for third choice, or 0 for not available.</span>
+			
+			<table id="monday_availability">
+			  	<tr>
+					<td>What is your attendance preference for Monday from 3pm-3:50pm?</td>
+					<td><%= f.select :discussion_section_1, {"1" => 1, "2" => 2, "3" => 3, "0" => 0} %></td>
+				</tr>
+				<tr>
+					<td>What is your attendance preference for Monday from 4pm-4:50pm?</td>
+					<td><%= f.select :discussion_section_2, {"1" => 1, "2" => 2, "3" => 3, "0" => 0} %></td>
+				</tr>
+			</table>
+		</div>
+		<div class="form_section">
+			<h3>Your Friends</h3>
+			<span class="instructions"><span class="red">(Optional) </span> Open the dropdown and click the name of a friend you want to work with or start typing a name on the left and click one from the selection. Click Add to Friends to add them to the text field below. You can use both the dropdown and the text field multiple times.</span>
+		
+		  	<div id="friends_selection">
+		  		<div class="floatLeft">
+					<input type="text" class="autocomplete"></input><%= link_to "Add To Friends", "javascript:void(0);", :class => "orange_button teammate_trigger" %>
+				</div>
+			
+				<div class="floatRight">
+					<select class="team_select">
+						<option selected="selected">Choose A Friend</option>
+						<option>------------</option>
+						<% for student in @enrolled_students %>
+							<option value="<%= student.name %> <<%= student.email %>>"><%= student.name %></option>
+						<% end %>
+					</select>
+				</div>
+				<div class="clear"></div>
+		  	</div>
+		
+			<%= f.hidden_field :preferred_teammates %>
+			<%= f.hidden_field :preferred_teammates_store %>
+			
+			<ul class="friends_list target"></ul>
+		</div>
+	
+		<div class="form_section">
+			<h3>Programming Proficiency</h3>
+			<span class="info">How well do you know these languages? 10 for Expert, 0 for No Knowledge</span>
+			<ul id="programming_languages">
+				<li class="language">
+					<%= f.label :html, "HTML" %>
+					<div class="slider"></div>
+					<%= f.text_field :html %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :css, "CSS" %>
+					<div class="slider"></div>
+					<%= f.text_field :css %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :javascript, "Javascript" %>
+					<div class="slider"></div>
+					<%= f.text_field :javascript %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :java, "Java" %>
+					<div class="slider"></div>
+					<%= f.text_field :java %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :cpp, "C/C++" %>
+					<div class="slider"></div>
+					<%= f.text_field :cpp %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :python, "Python" %>
+					<div class="slider"></div>
+					<%= f.text_field :python %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :ruby_ror, "Ruby/Ruby on Rails" %>
+					<div class="slider"></div>
+					<%= f.text_field :ruby_ror %>
+					<div class="clear"></div>
+				</li>
+				<li class="language">
+					<%= f.label :sql, "SQL (MySQL, Postgres, etc.)" %>
+					<div class="slider"></div>
+					<%= f.text_field :sql %>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<%= f.label :other, "Any Other Languages?" %>
+					<%= f.text_area :other, :rows => 2 %>
+				</li>
+			</ul>
+		</div>
+	
+		<div id="form_footer">
+			<% if current_user.signup_status == 'completed' %>
+				<p><%= f.submit "Update", :class => "orange_button floatRight" %></p>
+			<% else %>
+				<p><%= f.submit "Continue to Step 3", :class => "orange_button floatRight" %>
+				<%= hidden_field_tag 'step', '2' %></p>
+			<% end %>
+			<div class="clear"></div>
+		</div>
+	<% end %>
+</div>

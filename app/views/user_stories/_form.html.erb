@@ -1,0 +1,16 @@
+<%= form_for @user_story do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :actor %><br />
+    <%= f.text_field :actor %>
+  </p>
+  <p>
+    <%= f.label :goal %><br />
+    <%= f.text_area :goal %>
+  </p>
+  <p>
+    <%= f.label :group %><br />
+    <%= f.text_field :group %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

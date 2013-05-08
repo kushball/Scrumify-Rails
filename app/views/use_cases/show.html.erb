@@ -1,0 +1,20 @@
+<% title "Use Case" %>
+
+<p>
+  <strong>Title:</strong>
+  <%= @use_case.title %>
+</p>
+<p>
+  <strong>Success Scenario:</strong>
+  <%= @use_case.success_scenario %>
+</p>
+<p>
+  <strong>Group:</strong>
+  <%= @use_case.group %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_use_case_path(@use_case) %> |
+  <%= link_to "Destroy", @use_case, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", use_cases_path %>
+</p>

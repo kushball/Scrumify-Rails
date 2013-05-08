@@ -1,0 +1,15 @@
+<% if @actual %>
+	<% title "Creating Time Card - Actuals" %>
+<% else %>
+	<% title "Creating Time Card - Estimates" %>
+<% end %>
+<div id="form">
+	<div id="form_header">
+		<ul id="breadcrumb">
+			<li class="faded">&larr;<%= link_to "Back", user_path(current_user, :view_option => "time_cards") %></li>
+			<li class="active">Current Timecard</li>
+		</ul>
+	</div>
+
+	<%= render 'form' %>
+</div>

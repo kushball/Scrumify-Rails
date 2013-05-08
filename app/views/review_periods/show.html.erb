@@ -1,0 +1,20 @@
+<% title "Review Period" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= @review_period.name %>
+</p>
+<p>
+  <strong>Starts On:</strong>
+  <%= @review_period.starts_on %>
+</p>
+<p>
+  <strong>Ends On:</strong>
+  <%= @review_period.ends_on %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_review_period_path(@review_period) %> |
+  <%= link_to "Destroy", @review_period, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", review_periods_path %>
+</p>

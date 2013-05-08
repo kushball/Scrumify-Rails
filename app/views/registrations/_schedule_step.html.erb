@@ -1,0 +1,80 @@
+<!-- Important: in Signup Wizard  (Step 3 - choosing time blocks in schedule) -->
+<!-- Shows schedule as conventional week: Monday - Sunday -->
+
+<div id="form" class="medium_width">
+	<div id="form_header">
+		<ul id="breadcrumb">
+			<li class="faded">Step 1: Login Info</li> 
+			<li><%= link_to "Step 2: A Bit About You", "signup_wizard?step=2" %></li>
+			<li class="active">Step 3: Availability</li>
+		</ul>
+	</div>
+	
+	<%= form_for @time_block do |f| %>
+		<%= f.error_messages %>
+		
+		<p class="instructions">
+			Fill out the following schedule to indicate the times you would be available to meet up with your future CSE 110 group. You will generally only meet up once per week, so this really just helps ensure you get placed in a group most compatible with your schedule. You and your group will decide on more concrete meet up times later.
+		</p>
+
+		<% if current_user.signup_status == 'completed' %>
+			<p class="info red">Note: If you have come here from an edit link (meaning you have already done this previously): we have the data you previously entered. If you fill out any boxes below, it will overwrite all of the old data. Treat this page as if you are filling your schedule out again.
+			</p>
+		<% end %>
+		
+		<table id="schedule_calendar">
+			<tr class="column-headers">
+				<th>Days</th>
+				<th>Monday</th>
+			   	<th>Tuesday</th>
+			   	<th>Wednesday</th>
+				<th>Thursday</th>
+				<th>Friday</th>
+				<th>Saturday</th>
+				<th>Sunday</th>
+		 	</tr>
+		    <tr id="morning">
+				<td>Morning</td>
+			  	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Monday_morning", nil %></td>
+		     	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Tuesday_morning", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Wednesday_morning", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Thursday_morning", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Friday_morning", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Saturday_morning", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Sunday_morning", nil %></td>
+		    </tr>
+			<tr id="afternoon">
+				<td>Afternoon</td>
+			  	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Monday_afternoon", nil %></td>
+		     	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Tuesday_afternoon", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Wednesday_afternoon", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Thursday_afternoon", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Friday_afternoon", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Saturday_afternoon", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Sunday_afternoon", nil %></td>
+		    </tr>
+			<tr id="evening">
+				<td>Evening</td>
+			  	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Monday_evening", nil %></td>
+		     	<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Tuesday_evening", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Wednesday_evening", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Thursday_evening", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Friday_evening", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Saturday_evening", nil %></td>
+				<td><%= f.check_box :chunk_of_time, {:multiple => true}, "Sunday_evening", nil %></td>
+		    </tr>
+		</table>
+
+		<%= hidden_field_tag 'schedule_type', 'conventional_simple' %>
+
+		<div id="form_footer">
+			<% if current_user.signup_status == 'completed' %>
+				<p id="form_button"><%= f.submit "Update", :class => "orange_button floatRight" %></p>
+			<% else %>
+							<div class="floatRight"><%= f.submit "Continue", :class => "orange_button floatRight" %></div>
+				<%= hidden_field_tag 'resource', @resource %>
+			<% end %>
+			<div class="clear"></div>
+		</div>
+	<% end %>
+</div>

@@ -1,0 +1,24 @@
+<% title "Review Periods" %>
+
+<table id="admin_table">
+  <thead>
+	  <tr>
+	    <th>Name</th>
+	    <th>Starts On</th>
+	    <th>Ends On</th>
+	    <th></th>
+		<th></th>
+	  </tr>
+  </thead>
+  <tbody>
+  <% for review_period in @review_periods %>
+    <tr>
+      <td><%= link_to review_period.name, review_period %></td>
+      <td><%= review_period.starts_on %></td>
+      <td><%= review_period.ends_on %></td>
+      <td><%= link_to "Edit", edit_review_period_path(review_period) %></td>
+      <td><%= link_to "Delete", review_period, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,83 @@
+<% if @groups.blank? %>
+	No Groups have been created yet.
+<% else %>
+	<div id="tabs">
+		<ul id="tab_header" class="blue_header">
+			<li><a href="#tabs-1" class="matte_button team_overview">Team Overview</a></li>
+			<li><a href="#tabs-2" class="matte_button individual_overview">Individual Overview</a></li>
+	        <li id="individual_selector"><%= form_tag peer_review_viewer_path, :method => 'get', :id => "peer_review_search", :remote => true do %>
+	        <div id="review_form">
+	          <%= select("group", "id", @groups.collect {|g| [ g.name, g.id ] }, { :selected => @selected_group.id }, { :id => "group_select" }) %>
+	      <%= select("user", "id", @users.collect {|u| [ u.name, u.id ] }, { :selected => @selected_user.id }, { :id => "user_select" }) %>
+	        </div>
+	      <% end %></li>
+		</ul>
+	  <div class="clear"></div>
+		<div id="tabs-1">
+
+	      <div id="team_overview">
+
+	        <% for period in @review_periods %>
+
+	            <div class="period_header">
+	                <%= period.name %>
+	            </div>
+
+	            <% for group in @groups %>
+					<% if !period.peer_reviews.where("user_id IN (?)", group.users.map {|u| u.id}.join(",")).empty? %>
+
+		                <div class="group_header">
+		                    <%= group.name %> <span class="avg_rating">Average Rating: <%= ReviewPeriod.calculate_team_average_rating(period, group)%></span>
+		                </div>
+
+		                <table id="admin_table">
+		                  <thead>
+		                    <th>Student Name</th>
+		                    <th>Role</th>
+		                    <th>Rating</th>
+		                  </thead>
+		                  <tbody>
+
+		                    <% people = ReviewPeriod.highest_lowest_averages(period, group) %>
+		                    <% if !people.blank? %>
+
+		                        <% for person in people[0] %>
+
+		                             <tr>
+		                               <td><strong><%= person["person"].name %></strong></td>
+		                               <td><%= person["person"].roles.map { |r| r.name }.join(",") %></td>
+		                               <td class="high_score"><%= person["average"] %></td>
+		                             </tr>
+
+		                         <% end %>
+
+		                         <% for person in people[1] %>
+
+		                             <tr>
+		                               <td><strong><%= person["person"].name %></strong></td>
+		                               <td><%= person["person"].roles.map { |r| r.name }.join(",") %></td>
+		                               <td class="low_score"><%= person["average"] %></td>
+		                             </tr>
+
+		                         <% end %>
+
+		                     <% end %>
+
+		                  </tbody>
+		                </table>
+
+					<% end %>
+
+				<% end %>
+
+			<% end %>
+	      </div>
+
+		</div>
+
+		<div id="tabs-2">
+	      <div id="peer_reviews_data">
+	          <%= render "peer_reviews" %>
+	      </div>
+	</div>
+<% end %>

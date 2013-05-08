@@ -1,0 +1,12 @@
+<%= form_for @deviation do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :body %><br />
+    <%= f.text_area :body %>
+  </p>
+  <p>
+    <%= f.label :use_case %><br />
+    <%= f.text_field :use_case %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

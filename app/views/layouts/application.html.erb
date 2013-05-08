@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for?(:title) ? yield(:title) : "UCSD CSE 110 Class Tools" %></title>
+    <%= stylesheet_link_tag "application", "uniform.default.css", "bootstrap.css" %>
+    <%= javascript_include_tag "jquery", "rails", "jquery.livesearch.js", "highcharts", "nested_form", "jquery.inlinefields.min.js", "jquery.uniform.min.js", "jquery.dataTables.js", "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js", "application", "bootstrap.min.js", "jquery.kinetic.js" %>
+	
+	<!-- TypeKit Fonts -->
+	<script type="text/javascript" src="http://use.typekit.com/bvi5are.js"></script>
+	<script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+
+    <%= csrf_meta_tag %>
+    <%= yield(:head) %>
+  </head>
+  <body>
+	<%= render 'layouts/header' %>
+	
+	<div id="content_area">
+		<% if content_for?(:secondary_nav) %>
+			<div id="secondary_nav_bar">
+				<%= yield(:secondary_nav) %>
+			</div>
+		<% end %>
+		
+		<div id="main_navigation_sidebar">
+			<%= render 'layouts/default_nav_links' %>
+		</div>
+	
+    	<div id="application_container">
+			<% if notice %>
+				<div id="application_notice"><p><%= notice %></p></div>
+			<% end %>
+			<% if alert %>
+				<div id="application_alert"><p><%= alert %></p></div>
+			<% end %>
+			
+			<% if content_for?(:title) %>
+				<div id="admin_title">
+					<%= yield(:title) %>
+				</div>
+			<% end %>
+      		<%= yield %>
+    	</div>
+
+		<div class="clear"></div>
+	</div>
+  </body>
+</html>

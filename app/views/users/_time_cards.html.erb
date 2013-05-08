@@ -1,0 +1,403 @@
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+   var chart2;
+     chart2 = new Highcharts.Chart({
+      chart: {
+         renderTo: 'pie',
+      },
+      title: {
+         text: 'Time Spent on Project',
+      },
+      subtitle: {
+      text: 'Actual Hours  /   Estimate Hours'
+      },
+      credits :  {
+         enabled : false 
+      },
+      plotOptions: {
+        pie: {
+            showInLegend: true,
+            dataLabels: {
+                enabled: false
+            },
+            point: {
+                events: {
+                   legendItemClick: function() {
+                      var shift = 0;
+                      for(var i = 0; i<chart2.series[0].data.length; i++) {
+                          if(this == chart2.series[0].data[i]) {
+                              shift = i;
+                              i = chart2.series[0].data.length; // exit loop
+                          }
+                      }
+                      var slice = chart2.series[1].data[shift];
+                      if (this.visible) {
+                            this.y_old = this.y;
+                            this.update(0);
+                            slice.y_old = slice.y;
+                            slice.update(0);
+                      }
+                      else {
+                          this.update(this.y_old);
+                          slice.update(slice.y_old);
+                      }
+                   },
+                }
+            }
+        }
+    },
+      tooltip: {
+formatter: function() {
+               if(this.series.name=="Total Estimate Hours") {
+                   return '<b>' + this.point.name +'<br/>' + 'Estimated: ' + this.y + ' hours: ' + Math.round(this.percentage) + '%';
+               } else {
+                   return '<b>'+ this.point.name +'<br/>'+ this.y +' hours: ' + Math.round(this.percentage) + '%';
+               }
+         }
+      },
+      legend: {
+         layout: 'horizontal',
+         align: 'bottom',
+         verticalAlign: 'bottom',
+         x: 0,
+         y: -5,
+         borderWidth: 1
+      },
+      series: [{ 
+         type: 'pie', 
+         name: 'Total Actual Hours',
+         data: [<%= @pie %>],
+         size: '70%',
+         center: ['30%', '50%']
+         }, {
+         type: 'pie',
+         name: 'Total Estimate Hours',
+         data: [<%= @est_pie %>],
+         size: '70%',
+         center: ['70%', '50%'],
+         showInLegend: false
+        }]
+});
+
+   chart = new Highcharts.Chart({
+      chart: {
+        renderTo: 'graph',
+        zoomtype: 'x'
+      },
+      title: {
+         text: 'Time Spent on Project',
+         x: -20 //center
+      },
+      credits :  {
+         enabled : false
+      },
+      xAxis: {
+         type: "datetime"
+      },
+      yAxis: {
+         min: -0.2,
+         startOnTick: false,
+         title: {
+            text: 'Hours Worked'
+         },
+         plotLines: [{
+            value: 0,
+            width: 1,
+            color: '#808080'
+         }]
+      },
+      tooltip: {
+         formatter: function() {
+                   if (this.x) {
+                      return '<b>'+ this.series.name + '<br/>' +this.point.name +': '+ this.y +' hours';
+                   } else {
+                      return '<b>'+ this.point.name +'<br/>'+ this.y +' hours';
+                   }
+         }
+      },
+      legend: {
+         layout: 'horizontal',
+         align: 'center',
+         verticalAlign: 'bottom',
+         borderWidth: 1
+      },
+      series: [
+         <%= @series %>]
+   });
+
+
+var actuals_on = true;
+$('#toggle_actuals').click(function() {
+  var _redraw = chart.redraw;
+  chart.redraw = function(){};
+  if(actuals_on) {  // when they click "Hide actuals"
+    actuals_on = false;
+    $('#toggle_actuals').html('Display Actuals');
+  } else {  // When they click "Display actuals"
+    actuals_on = true;
+    $('#toggle_actuals').html('Hide Actuals');
+  }
+  chart.redraw = _redraw;
+  redraw_graph();
+});
+
+var estimates_on = true;
+  var _redraw = chart.redraw;
+  chart.redraw = function(){};
+$('#toggle_estimates').click(function() {
+  if(estimates_on) {
+    estimates_on = false;
+    $('#toggle_estimates').html('Display Estimates');
+  } else {
+    estimates_on = true;
+    $('#toggle_estimates').html('Hide Estimates');
+  }  
+  chart.redraw = _redraw;
+  redraw_graph();
+});
+
+var charges = <%= @charge_numbers.length %>;
+$(':checkbox').click(function () {
+  var _redraw = chart.redraw;
+  chart.redraw = function(){};
+    var series = chart.series;
+    var start = this.name * 2;
+    if (this.checked) {
+       if(actuals_on) {
+          series[start].show();
+       }
+       if(estimates_on) {
+          series[start+1].show();
+       }
+    } else {
+       series[start].hide();
+       series[start+1].hide();
+    }
+  chart.redraw = _redraw;
+});
+
+function redraw_graph() {
+  var _redraw = chart.redraw;
+  chart.redraw = function(){};
+  var series = chart.series;
+  $(':checkbox').each(function () {
+          var start = this.name * 2;
+    if(actuals_on) { // If actuals are being displayed
+      if(this.checked) {  // If the check box is checked
+        series[start].show();
+      } else {  // If the check box is not checked
+      series[start].hide();
+      }
+    } else { // If the actuals are NOT being displayed
+      series[start].hide();
+    }
+
+    if(estimates_on) { // If actuals are being displayed
+      if(this.checked) {  // If the check box is checked
+        series[start+1].show();
+      } else {  // If the check box is not checked
+        series[start+1].hide();
+      }
+    } else { // If the actuals are NOT being displayed
+      series[start+1].hide();
+    }
+  });
+  chart.redraw = _redraw;
+}
+
+});
+</script>
+<div id="timecard_page">
+        <div class="blue_header">
+                <h2 class="floatLeft">Manage Timecards</h2>
+                <div id="graph_links" class="floatRight">
+                        <%= link_to "Open Time Graph", "javascript:void(0)", :class => "time_graph_trigger matte_button" %>
+                        <%= link_to "Open Time Chart", "javascript:void(0)", :class => "time_chart_trigger matte_button" %>
+                </div>
+                <div class="clear"></div>
+        </div>
+        
+        <div id="time_graph_container">
+                <div id="graph"></div>
+                <div id="graph_settings">
+                        <button id="toggle_actuals">Hide Actuals</button>
+                        <button id="toggle_estimates">Hide Estimates</button>
+                        <hidden_field id="num_people" value=<%= @num_people %> >
+
+                        <% count = 0 %>
+                        <% for num in @charge_numbers %>
+                        <li><input type="checkbox" id="<%= num.id%>" name="<%= count %>" checked="checked"><%= @group.name %><%= num.name %></li>
+                          <% count += 1 %>
+                        <% end %>
+                </div>
+        </div>
+        
+        <div id="time_chart_container">
+                <div id="pie"></div>
+        </div>  
+        
+        
+        <% @timecard_periods.reverse_each do |per| %>
+          <% if per.actual_available? %>
+
+        <div id="timecard_box" class="toggle">
+                <div class="header">
+                        <div class="name floatLeft">
+                          <%= per.name %>
+                </div>
+
+                <div class="dates floatLeft">
+                  <%= per.actual_starts_on.to_formatted_s(:long) + " - " + per.actual_ends_on.to_formatted_s(:long) %>
+                </div>
+                <div class="late floatLeft">
+                    <% if per.late? %>
+                                  Deadline Passed
+                    <% else %>
+                        Due in <%= distance_of_time_in_words(Time.now, per.due_on) %>
+                    <% end %>
+                </div>
+		<% if per.timecard_made(@user.id) %>
+
+                  <div class="status floatLeft">
+                    <% if per.timecard_made(@user.id).completed %>
+                        <span class="high_score"> Submitted: </span> <%= per.timecard_made(@user.id).updated_at.strftime("%m/%d/%Y at %l:%M %p") %>
+                    <% else %>
+                        <span class="low_score"> Not Submitted </span>
+                    <% end %>
+                  </div>
+
+                  <div class="floatRight">
+                                <a href="JavaScript:void(0);" class="trigger"><span>View</span><span class="hide">Close</span></a>
+                
+                    <% if per.timecard_made(@user.id).completed %>
+                                        <% if (Time.now <= per.due_on) %>
+                        <%= link_to "Unsubmit", remove_completed_path(per.timecard_made(@user.id)), :class => "red_matte_button", :confirm => "Are you sure you want to unsubmit this timecard? If it is past the due date, it will be marked late." %>
+                                        <% end %>
+                    <% else %>
+                        <%= link_to "Edit Timecard", edit_timecard_path(per.timecard_made(@user.id), :timecard_period_id => per.id), :class => "edit_timecard_link"  %>
+                        <%= link_to "Submit", set_completed_path(per.timecard_made(@user.id)), :class => "blue_matte_button", :confirm => "If the due date has not been reached, you may unsubmit the timecard and submit it again as many times as you would like. You will not be able to edit this timecard until you unsubmit it. Are you sure you are ready to submit this card?" %>
+                    <% end %>
+                  </div>
+
+                        <div class="clear"></div>
+                </div>
+
+
+                <div class="toggle_content">
+                            <% card = per.timecard_made(@user.id) %>
+                            <% if card %>
+                            <% week = ["Saturday",  "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"] %>
+                        
+                                <div class="big_stats">
+                                        <div class="floatLeft">
+                                                <h2>Total Actual Hours</h2>
+                                                <span class="number"><%= card.total_actual_hours %></span>
+                                        </div>
+                                        <div class="floatRight">
+                                                <h2>Total Estimate Hours</h2>
+                                                <span class="number"><%= card.total_estimate_hours %></span>
+                                        </div>
+                                        <div class="clear"></div>
+                                </div>
+                        
+                                <div class="table_title"><span class="main_title">Actuals</span> <span class="support_title"><%=  per.actual_starts_on.to_formatted_s(:long) + " - " + per.actual_ends_on.to_formatted_s(:long) %></span> </div>
+                            <table id="admin_table">
+                                <thead>
+                            <th>Charge Number</th>
+                            <% for day in week %>
+                              <th><%= day %> </th>
+                            <% end %>
+
+                                </thead>
+                            <% hours = 0 %>
+                                <tbody>
+                            <% for num in @charge_numbers %>
+                              <tr>
+                              <td><%= @group.name + num.name + ":  " + num.description %></td>
+                              <% for day in week %>
+                                <% hours = 0 %>
+                                <% num.time_logs.where(:timecard_id => card.id).each do |log| %>
+                                  <% if log.actual %>
+                                    <% if log.day == day %>
+                                      <% hours += log.hours %>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                                  <td><% if(hours) > 0 %>
+                                         <%= hours %>
+                                      <% else %>
+                                         <%= "" %>
+                                      <% end %></td>
+                              <% end %>
+                            </tr>
+                            <% end %>
+                                </tbody>
+                        </table>
+                            <div class="table_title"><span class="main_title">Estimates</span> <span class="support_title"><%=  per.estimate_starts_on.to_formatted_s(:long) + " - " + per.estimate_ends_on.to_formatted_s(:long) %></span></div>
+                            <table id="admin_table">
+                                <thead>
+                            <th>Charge Number</th>
+                                    <% for day in week %>
+                                      <th><%= day %> </th>
+                                    <% end %>
+                            </thead>
+                                <% hours = 0 %>
+                                <tbody>
+                            <% for num in @charge_numbers %>
+                              <tr>
+                              <td><%= @group.name + num.name + ":  " + num.description %></td>
+                              <% for day in week %>
+                                <% hours = 0 %>
+                                <% num.time_logs.where(:timecard_id => card.id).each do |log| %>
+                                  <% if !log.actual %>
+                                    <% if log.day == day %>
+                                        <% hours += log.hours %>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                                  <td><% if(hours) > 0 %>
+                                         <%= hours %>
+                                      <% else %>
+                                         <%= "" %>
+                                      <% end %></td>
+                              <% end %>
+                            </tr>
+                            <% end %>
+                                </tbody>
+                        </table>
+
+                        <div class="timecard_stats">
+                                <ul class="timecard_content">
+                                        <li>
+                                                <h2>Accomplishments</h2>
+                                                <p><%= card.done %></p>
+                                        </li>
+                                        <li>
+                                                <h2>Issues</h2>
+                                                <p><%= card.issues %></p>
+                                        </li>
+                                        <li>
+                                                <h2>Still Left To Do</h2>
+                                                <p><%= card.todo %></p>
+                                        </li>
+                                </ul>
+                        </div>
+                        
+                              
+                            <% else %>
+                                        No Timecards Yet.
+                            <% end %>
+                </div>
+        </div>
+          <% end %>
+
+
+        <% end %>
+        
+	<% end %>        
+        
+        
+        
+        
+        
+</div>

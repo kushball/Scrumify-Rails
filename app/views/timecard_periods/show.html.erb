@@ -1,0 +1,44 @@
+<% title "Timecard Period" %>
+
+<ul id="show_info">
+	<li>
+		<strong>Name:</strong>
+  		<%= @timecard_period.name %>
+	</li>
+	<li>
+		<strong>Actual Starts On:</strong>
+	  	<%= @timecard_period.actual_starts_on.to_date.to_formatted_s(:long) %>
+	</li>
+	<li>
+	  <strong>Actual Ends On:</strong>
+	  <%= @timecard_period.actual_ends_on.to_formatted_s(:long) %>
+	</li>
+	<li>
+	  <strong>Estimate Starts On:</strong>
+	  <%= @timecard_period.estimate_starts_on.to_formatted_s(:long) %>
+	</li>
+	<li>
+	  <strong>Estimate Ends On:</strong>
+	  <%= @timecard_period.estimate_ends_on.to_formatted_s(:long) %>
+	</li>
+	<li>
+	  <strong>Due On:</strong>
+	  <%= @timecard_period.due_on.to_formatted_s(:long) %>
+	</li>
+</ul>
+
+<div class="list_box">
+	<div class="list_header">
+		Groups
+	</div>
+	<% if !@groups.blank? %>
+	<ul>
+	  <% for group in @groups %>
+	    <li><%= link_to group.name, group_path(group, :view_option => "time_cards") %></li>
+	  <% end %>
+	</ul>
+	<% else %>
+	  <div class="nothing">No Groups have been created.</div>
+	<% end %>
+	
+</div>

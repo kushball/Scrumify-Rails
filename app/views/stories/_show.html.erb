@@ -1,0 +1,36 @@
+<% title "Story" %>
+
+<p>
+  <strong>Name:</strong>
+  <%= story.name %>
+</p>
+<p>
+  <strong>Description:</strong>
+  <%= story.description %>
+</p>
+<p>
+  <strong>Start Date:</strong>
+  <%= story.start_date.to_s %>
+</p>
+<p>
+  <strong>End Date:</strong>
+  <%= story.end_date %>
+</p>
+<p>
+  <strong>Group:</strong>
+  <%= story.group_id %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_group_story_path(group, story) %> |
+  <%= link_to "Destroy", [group, story], :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", group_stories_path %>
+</p>
+
+<ul id="tasks">
+	<h3>Tasks</h3>
+	<% for task in story.tasks %>
+		<%= render "tasks/task", :task => task %>
+	<% end %>
+</ul>
+

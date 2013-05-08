@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+<b>Group:</b>
+<%= @custom_form.group %>
+</p>
+
+<p>
+<b>Name:</b>
+<%= @custom_form.name %>
+</p>
+
+<p>
+<a href='#' onclick="toggle_visibility('<%= @custom_fields_div %>')">
+  Click Here to hide custom fields!
+</a>
+</p>
+
+<div id="<%= @custom_fields_div %>" style="display: block">
+  <% for cf in @custom_fields %>
+  <p> <b><%= cf.name %></b> </p>
+  <% end %>
+</div>
+
+<p>
+<a href='#' onclick="toggle_visibility('<%= @documentations_div %>')">
+  Click Here to hide documentations!
+</a>
+</p>
+
+<div id="<%= @documentations_div %>" style="display: none">
+  <% for doc in @documentations %>
+  <p><b><%= doc.name %></b></p>
+  <% for df in doc.data_fields %>
+  <div id="<%= df.div %>">
+    <p>
+    <b><%= df.field_name %></b>  
+    <%= df.body %>
+    </p>
+  </div>
+  <% end %>
+  <% end %>
+</div>
+
+
+<%= link_to 'Edit', edit_custom_form_path(@custom_form) %> |
+<%= link_to 'Back', custom_forms_path %>

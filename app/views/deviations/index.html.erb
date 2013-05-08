@@ -1,0 +1,19 @@
+<% title "Deviations" %>
+
+<table>
+  <tr>
+    <th>Body</th>
+    <th>Use Case</th>
+  </tr>
+  <% for deviation in @deviations %>
+    <tr>
+      <td><%= deviation.body %></td>
+      <td><%= deviation.use_case %></td>
+      <td><%= link_to "Show", deviation %></td>
+      <td><%= link_to "Edit", edit_deviation_path(deviation) %></td>
+      <td><%= link_to "Destroy", deviation, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Deviation", new_deviation_path %></p>

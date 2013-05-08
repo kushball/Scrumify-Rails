@@ -1,0 +1,21 @@
+<% title "Obligations" %>
+
+<table>
+  <tr>
+    <th>User</th>
+    <th>Membership</th>
+    <th>Role</th>
+  </tr>
+  <% for obligation in @obligations %>
+    <tr>
+      <td><%= obligation.user_id %></td>
+      <td><%= obligation.membership_id %></td>
+      <td><%= obligation.role_id %></td>
+      <td><%= link_to "Show", obligation %></td>
+      <td><%= link_to "Edit", edit_obligation_path(obligation) %></td>
+      <td><%= link_to "Destroy", obligation, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Obligation", new_obligation_path %></p>

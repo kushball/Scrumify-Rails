@@ -1,0 +1,20 @@
+UCSD CSE Class Tools 
+=====================
+
+Welcome to the UCSD Class Tools Application. The goal of this application is to directly integrate with the CSE 110 Software Engineering Course at the University of California, San Diego. It allows students to submit their assignments online, grades them, and allows Tutors and Professors to record the grades and monitor how groups within the class are progressing throughout the quarter.
+
+The application consists of a few parts which can be a bit overwhelming at first:
+
+	Courses - This application can have many courses. Everything else belongs to a course.
+	Users - This is the core of the application almost everything a user can do can be found in the user.rb (model). They own peer reviews, status reports, are part of groups and courses, etc.
+	
+	Groups - formed from students. 
+	Status Reports - A weekly report of actuals and estimates. Actuals are the hours spent working on specific charge numbers for the week and estimates are how many hours they plan to spend the following week.
+	Peer Reviews - 3 happen throughout the quarter. This is where each member of a group rates every other member of their group including themselves. 
+
+Lets go over each part in brief detail. You can look at the top of the model files for more information on each part. 
+
+
+
+
+

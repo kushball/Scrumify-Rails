@@ -1,0 +1,5 @@
+<p>
+	<%= link_to "Group Actions", dashboard_path %> | 
+	<%= link_to "Time Cards", dashboard_path(@group, :view_option => "time_cards") %> | 
+	<%= link_to "Peer Reviews", dashboard_path(@group, :view_option => "peer_reviews") %>
+</p>

@@ -1,0 +1,20 @@
+<% title "User Story" %>
+
+<p>
+  <strong>Actor:</strong>
+  <%= @user_story.actor %>
+</p>
+<p>
+  <strong>Goal:</strong>
+  <%= @user_story.goal %>
+</p>
+<p>
+  <strong>Group:</strong>
+  <%= @user_story.group %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_user_story_path(@user_story) %> |
+  <%= link_to "Destroy", @user_story, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", user_stories_path %>
+</p>

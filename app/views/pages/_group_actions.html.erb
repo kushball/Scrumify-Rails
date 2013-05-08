@@ -1,0 +1,24 @@
+<% if @groups.blank? %>
+	<p>
+		<%= link_to "Run Grouping Algorithm", configure_grouping_algorithm_path %>
+	</p>
+<% else %>
+	<p>
+		<%= link_to "Run Grouping Algorithm", configure_grouping_algorithm_path %> (last run on <%= @groups.first.created_at.strftime("%A, %B %d, %Y at %I:%M%P") %>)
+	</p>
+	<p>
+		<%= link_to "View Groupings", roster_path %>
+	</p>
+	<p>
+		<table>
+			<tr>
+				<th>Groups List</th>
+			</tr>
+			<% for group in @groups %>
+				<tr>
+					<td><%= link_to group.name, group %></td>
+				</tr>
+			<% end %>
+		</table>
+	</p>
+<% end %>

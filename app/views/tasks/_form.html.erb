@@ -1,0 +1,28 @@
+<%= form_for @task do |f| %>
+  <%= f.error_messages %>
+  <p>
+    <%= f.label :story_id %><br />
+    <%= f.text_field :story_id %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </p>
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+	<p>
+		<%= f.label :state_id, "State" %><br />
+		<%= collection_select(:task, :state_id, State.all, :id, :name, {:include_blank => true}) %>
+	</p>
+  <p>
+    <%= f.label :points %><br />
+    <%= f.text_field :points %>
+  </p>
+  <p><%= f.submit %></p>
+<% end %>

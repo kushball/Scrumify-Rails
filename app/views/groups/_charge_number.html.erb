@@ -1,0 +1,27 @@
+<table id="admin_table">
+	<thead>
+  	   <tr>
+	    <th>Name</th>
+	    <th>Description</th>
+		<th></th>
+		<th></th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <% for charge_number in @charge_numbers %>
+	    <tr>
+	      <td><%= @group.name %><%= charge_number.name %></td>
+	      <td><%= charge_number.description %></td>
+	      <% if current_user.is_group_deputy? %>
+	        <td><%= link_to "Edit", edit_charge_number_path(charge_number) %></td>
+	        <td><%= link_to "Destroy", charge_number, :confirm => 'Are you sure?', :method => :delete %></td>
+	     <% end %>
+	    </tr>
+	 <% end %>
+	</tbody>
+</table>
+
+<% if current_user.is_group_deputy? %>
+  <%= link_to "New Charge Number", new_charge_number_path,  :class => "matte_button" %>
+<% end %>
+

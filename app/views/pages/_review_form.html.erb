@@ -1,0 +1,2 @@
+<%= select("group", "id", @groups.collect {|g| [ g.name, g.id ] }, { :selected => @selected_group.id }, { :id => "group_select" }) %>
+<%= select("user", "id", @users.collect {|u| [ u.name, u.id ] }, { :selected => @selected_user.id }, { :id => "user_select" }) %>

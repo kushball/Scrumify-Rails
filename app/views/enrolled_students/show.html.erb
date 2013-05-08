@@ -1,0 +1,20 @@
+<% title "Enrolled Student" %>
+
+<p>
+  <strong>Roster:</strong>
+  <%= @enrolled_student.roster_id %>
+</p>
+<p>
+  <strong>Email:</strong>
+  <%= @enrolled_student.email %>
+</p>
+<p>
+  <strong>Name:</strong>
+  <%= @enrolled_student.name %>
+</p>
+
+<p>
+  <%= link_to "Edit", edit_enrolled_student_path(@enrolled_student) %> |
+  <%= link_to "Destroy", @enrolled_student, :confirm => 'Are you sure?', :method => :delete %> |
+  <%= link_to "View All", enrolled_students_path %>
+</p>

@@ -1,0 +1,17 @@
+<% title "Rosters" %>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+  <% for roster in @rosters %>
+    <tr>
+      <td><%= roster.name %></td>
+      <td><%= link_to "Show", roster %></td>
+      <td><%= link_to "Edit", edit_roster_path(roster) %></td>
+      <td><%= link_to "Destroy", roster, :confirm => 'Are you sure?', :method => :delete %></td>
+    </tr>
+  <% end %>
+</table>
+
+<p><%= link_to "New Roster", new_roster_path %></p>

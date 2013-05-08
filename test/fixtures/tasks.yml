@@ -1,0 +1,13 @@
+one:
+  story_id: 1
+  name: MyString
+  description: MyText
+  user_id: 1
+  points: 1
+
+two:
+  story_id: 1
+  name: MyString
+  description: MyText
+  user_id: 1
+  points: 1
