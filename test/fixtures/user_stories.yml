@@ -1,9 +1,0 @@
-one:
-  actor: MyString
-  goal: MyText
-  group: 
-
-two:
-  actor: MyString
-  goal: MyText
-  group: 

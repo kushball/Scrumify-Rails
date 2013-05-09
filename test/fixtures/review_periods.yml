@@ -1,9 +1,0 @@
-one:
-  name: MyString
-  starts_on: 2011-12-01
-  ends_on: 2011-12-01
-
-two:
-  name: MyString
-  starts_on: 2011-12-01
-  ends_on: 2011-12-01

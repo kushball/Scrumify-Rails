@@ -1,9 +1,0 @@
-<%= form_for @time_block do |f| %>
-  <%= f.error_messages %>
-  <p>
-	<%= Day.find(@time_block.day_id).name %><br />
-    <%= f.label :chunk_of_time %>
-    <%= f.select :chunk_of_time, ["morning", "afternoon", "evening"] %>
-  </p>
-  <p><%= f.submit %></p>
-<% end %>

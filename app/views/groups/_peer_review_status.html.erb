@@ -1,3 +1,0 @@
-<div id="peer_review_status">
-	Current Peer Review: <%= link_to "#{@current_review_period.name}: Peer Reviews", new_peer_review_path(:review_period_id => @current_review_period.id) %> ( Due in <%= distance_of_time_in_words(Time.now, @current_review_period.ends_on.end_of_day) %> )
-</div>

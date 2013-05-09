@@ -1,9 +1,0 @@
-one:
-  name: MyString
-  statable_id: 1
-  description: MyText
-
-two:
-  name: MyString
-  statable_id: 1
-  description: MyText

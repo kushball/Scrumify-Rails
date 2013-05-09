@@ -1,9 +1,0 @@
-<%= form_for @time_log do |f| %>
-  <%= f.error_messages %>
-	<%= f.select :actual, { "Actual" => true, "Estimate" => false }, { :id => "time_log_form_actual_selector" } %>
-  <%= f.select :charge_number_id, @charge_numbers %>
-	<%= f.select :day, @available_days_for_actuals, { :class => "time_log_form_day_select" } %>
-  <%= f.text_field :hours %>
-	<%= f.hidden_field :timecard_id, :value => @timecard.id %>
-  <%= f.submit %>
-<% end %>
